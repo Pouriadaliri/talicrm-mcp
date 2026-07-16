@@ -1,0 +1,39 @@
+{
+  "name": "talicrm-mcp",
+  "version": "1.0.0",
+  "description": "MCP server for TaliCRM. Ask Claude about your meetings, contacts, companies, tags and action items.",
+  "type": "module",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Pouriadaliri/talicrm-mcp.git"
+  },
+  "homepage": "https://talicrm.com/developers",
+  "bin": {
+    "talicrm-mcp": "src/index.js"
+  },
+  "files": [
+    "src",
+    "README.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "start": "node src/index.js",
+    "inspect": "npx @modelcontextprotocol/inspector node src/index.js"
+  },
+  "keywords": [
+    "mcp",
+    "modelcontextprotocol",
+    "claude",
+    "talicrm",
+    "crm",
+    "meetings"
+  ],
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.29.0",
+    "zod": "^3.25.0"
+  }
+}
