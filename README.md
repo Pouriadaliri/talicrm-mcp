@@ -30,7 +30,7 @@ This is the part that matters, so it is first.
 
 ### 1. Create an API key
 
-Go to **[talicrm.com](https://talicrm.com) → Settings → Developers → Create API key**.
+Go to **[talicrm.com](https://talicrm.com) → Settings → API → Create API key**.
 Copy it immediately: it is shown once and starts with `talicrm_sk_`.
 
 ### 2. Add it to Claude
@@ -38,7 +38,7 @@ Copy it immediately: it is shown once and starts with `talicrm_sk_`.
 **Claude Code**
 
 ```bash
-claude mcp add talicrm --env TALICRM_API_KEY=talicrm_sk_your_key_here -- npx -y talicrm-mcp
+claude mcp add talicrm --env TALICRM_API_KEY=talicrm_sk_your_key_here -- npx -y github:Pouriadaliri/talicrm-mcp
 ```
 
 **Claude Desktop** — edit `claude_desktop_config.json`
@@ -49,7 +49,7 @@ claude mcp add talicrm --env TALICRM_API_KEY=talicrm_sk_your_key_here -- npx -y 
   "mcpServers": {
     "talicrm": {
       "command": "npx",
-      "args": ["-y", "talicrm-mcp"],
+      "args": ["-y", "github:Pouriadaliri/talicrm-mcp"],
       "env": {
         "TALICRM_API_KEY": "talicrm_sk_your_key_here"
       }
@@ -100,7 +100,7 @@ Requires Node 18+ (uses the built-in `fetch`).
 
 **"TALICRM_API_KEY is not set"** — the `env` block is missing or Claude was not restarted.
 
-**"TaliCRM rejected the API key"** — it was revoked or expired. Create a new one in Settings → Developers.
+**"TaliCRM rejected the API key"** — it was revoked or expired. Create a new one in Settings → API.
 
 **"Not found in your TaliCRM account"** — the id does not exist *or* it belongs to someone else. The API
 deliberately does not distinguish between the two.
