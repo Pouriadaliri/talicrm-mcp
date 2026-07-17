@@ -13,8 +13,15 @@ TaliCRM account over the public read-only API.
 
 This is the part that matters, so it is first.
 
-- **Read only.** Every tool is a `GET`. The TaliCRM v1 API has no write path at all, so this server
-  cannot create, edit or delete anything in your CRM, no matter what it is asked to do.
+- **Read only unless you choose otherwise.** Write tools are only registered if your key was created
+  with **write** access. With a read-only key they do not exist at all, so Claude cannot call them
+  even by mistake. The server re-checks the scope on every request, so this client can never grant
+  itself write access. If anything goes wrong verifying the key, it falls back to read-only.
+- **Nothing can ever be deleted.** The API has no delete endpoint, so even a write key can add and
+  correct data but can never destroy it.
+- **Writes cannot bypass your plan.** They go through the same quota and ownership rules as the app,
+  and never trigger AI transcription or summarising (which cost money).
+- Set `TALICRM_READ_ONLY=true` to force read-only even when using a write key.
 - **Your data only.** Your API key is bound to your account on the server side. Every query is scoped
   to your user id and the organizations you belong to. Another person's key can never read your rows,
   and yours can never read theirs. This is enforced in the database query, not in this client.
@@ -30,7 +37,7 @@ This is the part that matters, so it is first.
 
 ### 1. Create an API key
 
-Go to **[talicrm.com](https://talicrm.com) → Settings → API → Create API key**.
+Go to **[talicrm.com](https://talicrm.com) → Settings → API → Create API key**, and pick **Read only** or **Read and write**.
 Copy it immediately: it is shown once and starts with `talicrm_sk_`.
 
 ### 2. Add it to Claude
@@ -79,12 +86,30 @@ Restart Claude, then ask it: *"Use talicrm_whoami to check my CRM connection."*
 Transcripts are excluded by default and truncated at 20,000 characters when requested, so a long call
 cannot blow up the context window. Summaries and key points are always included.
 
+### Write tools (only with a write-access key)
+
+These appear **only** if your key has write access. All are create/update: there is no delete.
+
+| Tool | What it does |
+|---|---|
+| `talicrm_create_contact` | Add a person. Optionally attach a company and tags. |
+| `talicrm_update_contact` | Change fields on a contact. Only what you send changes. |
+| `talicrm_set_contact_tags` | Replace a contact's tags (send the complete set). |
+| `talicrm_create_company` | Add a company. |
+| `talicrm_update_company` | Change fields on a company. |
+| `talicrm_create_task` | Add a follow up, optionally linked to a person and due-dated. |
+| `talicrm_update_task` | Update a task, e.g. mark it done. |
+| `talicrm_create_meeting_note` | Log a **typed** meeting note. No audio, and it never triggers AI. |
+| `talicrm_update_meeting` | Change a meeting's title or notes. AI fields are not writable. |
+| `talicrm_set_meeting_tags` | Replace a meeting's tags. |
+
 ## Configuration
 
 | Variable | Required | Default | Purpose |
 |---|---|---|---|
 | `TALICRM_API_KEY` | yes | | Your key, starting `talicrm_sk_` |
 | `TALICRM_API_URL` | no | `https://talicrm.com` | Override for self-hosted instances |
+| `TALICRM_READ_ONLY` | no | `false` | `true` hides the write tools even with a write-access key |
 
 ## Development
 
