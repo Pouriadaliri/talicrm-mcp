@@ -7,7 +7,8 @@ Ask Claude about your [TaliCRM](https://talicrm.com) meetings, contacts, compani
 > **"Which follow ups are still open, and who are they for?"**
 
 This is a [Model Context Protocol](https://modelcontextprotocol.io) server. It connects Claude to your own
-TaliCRM account over the public read-only API.
+TaliCRM account over the public API. It is read-only by default; give your key write access and Claude
+can also add contacts, log meeting notes and create follow ups.
 
 ## Security
 
