@@ -104,10 +104,12 @@ server.registerTool('talicrm_get_meeting', {
   title: 'Get one meeting',
   description:
     'Get a single meeting in full: summary, key points, action items, participants, tags, and optionally ' +
-    'the verbatim transcript. Prefer the summary and key points when answering; only set ' +
-    'include_transcript when you genuinely need exact wording, since transcripts are long.',
+    'the verbatim transcript. This is the tool for "give me the transcript of meeting 165" or "what was ' +
+    'said in meeting 165" — pass that number as id with include_transcript true. Otherwise prefer the ' +
+    'summary and key points, and only set include_transcript when you genuinely need exact wording, ' +
+    'since transcripts are long.',
   inputSchema: {
-    id: z.number().int().describe('Meeting id, from talicrm_search_meetings'),
+    id: z.number().int().describe('Meeting id, from talicrm_search_meetings, or the #number shown on each recording in the TaliCRM app (e.g. "meeting 165")'),
     include_transcript: z.boolean().optional().describe('Include the full transcript text (default false)'),
   },
   annotations: READ_ONLY,
